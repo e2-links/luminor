@@ -1,0 +1,14 @@
+# ignore everything
+.idea
+*.js
+*iml
+
+HELP.md
+
+# exceptions
+!README.md
+!.gitignore
+!assets/**
+!src/**
+!index.html
+!.github/**

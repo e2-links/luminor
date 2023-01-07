@@ -1,0 +1,26 @@
+textarea.sticker {
+    border: 0;
+    background-color: wheat;
+    width: 45%;
+    padding: 1rem;
+    margin: 1.5rem;
+    box-shadow: 5px 5px 5px gray;
+}
+
+/* width */
+textarea.sticker::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+textarea.sticker::-webkit-scrollbar-track {
+    background: wheat; 
+}
+
+/* Handle */
+textarea.sticker::-webkit-scrollbar-thumb,
+textarea.sticker::-webkit-scrollbar-thumb:hover {
+    box-shadow: inset -3px -3px 3px gray,
+                inset -3px -3px 5px gray;
+    border-radius: 25px;
+}

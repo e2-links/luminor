@@ -1,0 +1,8 @@
+.dropdown.bootstrap-select {
+    border: .5px solid lightgray;
+    border-radius: 5px;
+}
+
+.btn.dropdown-toggle.btn-light {
+  background-color: white;
+}

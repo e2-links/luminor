@@ -1,0 +1,14 @@
+code.inline {
+    color: chocolate;
+}
+
+code.block {
+    display: block;
+    white-space: pre-wrap;
+    background: #ebecf0;
+    box-shadow: inset 2px 2px 5px #babecc;
+    border-radius: 25px;
+    margin-right: 3rem;
+    padding-left: 2rem;
+    text-shadow: 1px 1px 0 white;
+}

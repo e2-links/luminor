@@ -1,0 +1,7 @@
+datalist, .links-search-option {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 5rem;
+    max-width: 5rem;
+}

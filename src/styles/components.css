@@ -1,0 +1,272 @@
+@import url(./telia-colors.css);
+
+.nav-bar-bg {
+    background-color: var(--tc-purple-500) !important;
+}
+
+.nav-bar-btn {
+    width: 7rem;
+    background-color: var(--tc-purple-500);
+    color: white;
+    border: none;
+}
+
+.nav-bar-btn:hover {
+    text-decoration: underline;
+    color: white;
+    border: none;
+}
+
+.nav-bar-btn:active,
+.nav-bar-btn.active {
+    color: white;
+    background-color: var(--tc-purple-600);
+    border: none;
+}
+
+a,
+a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+input[type=text],
+input[type=password] {
+    display: inline-block;
+    border: 1px solid white;
+    border-radius: 0.7rem;
+    box-sizing: border-box;
+    background-color: white;
+    font-size: 1rem;
+    width: 11rem;
+}
+
+input[type=text]::selection,
+input[type=password]::selection {
+    background-color: white;
+}
+
+.hidden-text,
+.hidden-text::selection {
+    background-color: white;
+    color: white;
+}
+
+input.form-control,
+select.form-select {
+    box-shadow: inset 3px 3px 3px gray;
+}
+
+input.form-control:focus,
+select.form-select:focus {
+    border: 1px solid #ced4da;
+    box-shadow: inset 1px 1px 3px gray;
+}
+
+*:focus {
+    outline: none;
+}
+
+label {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.line {
+    height: 0.5rem;
+    width: 100%;
+    background-color: rgb(241, 241, 241);
+    border-radius: 0.2rem;
+}
+
+.btn,
+.btn.focus,
+.btn:focus,
+.btn-info.focus,
+.btn-info:focus {
+    width: 150px;
+    font-weight: bold;
+    box-shadow: 1px 1px 2px black;
+}
+
+.btn:active,
+.btn.active,
+.btn.focus,
+.btn:focus,
+.btn-info.focus,
+.btn-info:focus {
+    border: none;
+}
+
+table .btn {
+    margin-top: .5rem;
+}
+
+.btn-telia,
+.btn-telia:active,
+.btn-telia:focus {
+    background-color: var(--tc-purple-500);
+    color: white;
+}
+
+.btn-telia:hover {
+    background-color: var(--tc-purple-600);
+    color: white;
+}
+
+.btn:hover:enabled {
+    width: 150px;
+    font-weight: bold;
+    box-shadow: inset 2px 2px 2px black;
+}
+
+.btn:hover:disabled {
+    width: 150px;
+    font-weight: bold;
+}
+
+.btn-auto {
+    width: auto;
+}
+
+.input-group-append .btn,
+.input-group-append .btn:hover {
+    width: initial;
+}
+
+.input-group-append .btn,
+.input-group-append .btn:hover,
+.navbar .btn,
+.navbar .btn:hover,
+.btn.dropdown-toggle,
+.btn.dropdown-toggle:hover,
+#scope-select,
+#scope-select:hover {
+    box-shadow: none;
+}
+
+.btn.dropdown-toggle,
+.btn.dropdown-toggle:hover,
+#scope-select,
+#scope-select:hover,
+.dropdown.bootstrap-select {
+    margin-top: 0;
+    width: 100%;
+    font-weight: normal;
+    border: none;
+    box-shadow: inset 3px 3px 3px gray;
+}
+
+.btn.dropdown-toggle:focus,
+#scope-select:focus,
+.dropdown.bootstrap-select:focus,
+.btn.bootstrap-select.dropdown-toggle:focus {
+    border: none;
+    box-shadow: inset 1px 1px 3px gray;
+    outline: 0 !important;
+    outline-offset: 0 !important;
+}
+
+button.btn.dropdown-toggle::after {
+    display: none;
+}
+
+.btn.btn-circle {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: .8rem;
+    border-radius: 50%;
+    margin-top: 0;
+    border-color: transparent;
+}
+
+.btn.btn-icon,
+.btn.btn-icon:focus,
+.btn.btn-icon:hover {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: .8rem;
+    border-radius: 50%;
+    margin-top: 0;
+    border-color: transparent;
+}
+
+.card {
+    border: none;
+}
+
+.card-header {
+    padding: 0;
+}
+
+.card-header h4 {
+    margin: 0 0 0;
+    padding: .7rem 1.25rem;
+}
+
+.toast {
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, 0px);
+    z-index: 9999;
+}
+
+.modal-title {
+    line-height: 1.2rem;
+}
+
+.flex-empty-cell {
+    width: 7rem;
+    padding: 8px;
+    display: flex;
+    display: -ms-flexbox;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+i.color-gray {
+    color: var(--tc-gray-400);
+}
+
+.env-title,
+.hidden-title {
+    width: 9rem;
+    min-width: 9rem;
+    margin: 0 .7rem;
+    margin-bottom: 0;
+    padding: .9rem 0 0 0;
+    font-size: medium;
+    font-weight: bold;
+}
+
+li.list-group-item.link:hover {
+    background-color: var(--tc-purple-500) !important;
+    color: white;
+    cursor: pointer;
+}
+
+.modal-toggle-icon {
+    cursor: pointer;
+    height: fit-content;
+}
+
+.row {
+    --bs-gutter-x: 0;
+}
+
+.row>*:not(.col):not(.col-1):not(.col-2):not(.col-3):not(.col-4):not(.col-5):not(.col-6) {
+    width: inherit;
+}
+
+.deafult-cursor {
+    cursor: default;
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

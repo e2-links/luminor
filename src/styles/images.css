@@ -1,0 +1,43 @@
+input[type=image] {
+    height: 7rem;
+    transition: transform .2s;
+    margin-bottom: .5rem;
+    margin-left: .5rem;
+    padding: .5rem;
+    border-radius: 20px;
+}
+
+input[type=image]#bitbucket-link,
+input[type=image]#cview-link {
+    padding: 1rem;
+}
+
+input[type=image]#jira-link {
+    padding: .8rem;
+}
+
+input[type=image]#workday-link {
+    padding: 1.3rem;
+}
+
+input[type=image]#figma-link {
+    padding: 1rem 2rem;
+}
+
+input[type=image]#grafana-link {
+    padding: 1rem 1.3rem;
+}
+
+input[type=image]#jenkins-link {
+    padding: .7rem 2rem;
+}
+
+input[type=image]:hover {
+    -ms-transform: scale(1.15); /* IE 9 */
+    -webkit-transform: scale(1.15); /* Safari 3-8 */
+    transform: scale(1.15);
+    box-shadow: 5px 0 10px lightgray,
+                -5px 0 10px lightgray,
+                0 5px 10px lightgray,
+                0 -5px 10px lightgray;
+}

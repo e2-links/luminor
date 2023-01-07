@@ -1,0 +1,17 @@
+.ad-search-box {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+
+.ad-search-box > .form-group {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+input#search-query {
+    width: 17rem;
+}

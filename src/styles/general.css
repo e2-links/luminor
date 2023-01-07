@@ -1,0 +1,25 @@
+body {
+    overflow-x: hidden;
+    height: 100%;
+}
+
+* {
+    font-family: 'TeliaSans', Helvetica, Arial, 'Lucida Grande', sans-serif;
+}
+
+#notes-tab {
+    height: 85vh;
+}
+
+#dev-tab,
+#manage-tab {
+    height: 93.27vh;
+}
+
+#notes-tab>iframe,
+#manage-tab>iframe,
+#dev-tab>iframe {
+    border: none;
+    width: 100%;
+    height: 100%;
+}

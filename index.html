@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Telia Links</title>
+    <link rel="icon" type="image/x-icon" href="./assets/http.ico">
+
+    <!-- Bootstrap 5.2.0 styles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+
+    <!-- JQuery 3.6.0 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Telia font -->
+    <link rel="stylesheet" href="https://cdn.voca.teliacompany.com/fonts/TeliaSansV10/TeliaSans.css" crossorigin="anonymous">
+
+    <!-- Font Awesome 6 icons -->
+    <script src="https://kit.fontawesome.com/370349eb06.js" crossorigin="anonymous"></script>
+
+    <!-- Internal styles -->
+    <link rel="stylesheet" href="./src/styles/telia-colors.css">
+    <link rel="stylesheet" href="./src/styles/components.css">
+    <link rel="stylesheet" href="./src/styles/switch-toggle.css">
+    <link rel="stylesheet" href="./src/styles/dropdown.css">
+    <link rel="stylesheet" href="./src/styles/footer.css">
+    <link rel="stylesheet" href="./src/styles/code-font.css">
+    <link rel="stylesheet" href="./src/styles/images.css">
+    <link rel="stylesheet" href="./src/styles/ad-search-box.css">
+    <link rel="stylesheet" href="./src/styles/links-search-box.css">
+    <link rel="stylesheet" href="./src/styles/general.css">
+
+</head>
+
+<script about="Constants" type="text/javascript" src="./src/js/constants.js"></script>
+<script about="DOM elements util" type="text/javascript" src="./src/js/utils.js"></script>
+<script about="Links" type='text/javascript' src='./src/js/links.js'></script>
+<script about="Parameters">
+
+    /* app version */
+    const APP_VERSION = 'v0.0.1';
+    /* variables */
+    let selectedProject = '';
+    let selectedEnvironment = '';
+
+    function refresh() {
+        location.reload();
+    }
+</script>
+<script about="JQuery listeners">
+
+    // Tooltip listeners
+    $(function () {
+        // All (not image and not buttons)
+        $('[data-bs-toggle="tooltip"]')
+            .not(':button')
+            .not(':input[type="image"]')
+            .tooltip({ trigger: 'hover' });
+
+        // Modal toggles
+        $('[data-bs-toggle="modal"]')
+            .tooltip({ trigger: 'hover' });
+
+        // Buttons
+        $(':button[data-bs-toggle="tooltip"]')
+            .tooltip({
+                delay: { show: 700, hide: 0 },
+                trigger: 'hover'
+            });
+
+        // Images
+        $(':input[type="image"]').tooltip({
+            delay: { show: 700, hide: 0 },
+            trigger: 'hover'
+        });
+    });
+
+</script>
+<script about="Setup">
+    function setProjectSelections() {
+        let options = '<option value="-" disabled selected>Select...</option>';
+        const projects = PROJECTS;
+        for (let project of projects) {
+                options += getOptionHtmlTag(project.swaggerName, project.swaggerName);
+        }
+        getById('project-list-select').innerHTML = options;
+    }
+
+    function setEnvironmentSelections() {
+        let options;
+        const environments = ENVIRONMENTS;
+        for (let environment of environments) {
+            options += getOptionHtmlTag(environment, environment);
+        }
+        getById('environment-list-select').innerHTML = options;
+    }
+
+    function setLinksSearchList() {
+        let options;
+        const linksMap = LINKS_SEARCH_MAP;
+        for (let linkKey of linksMap.keys()) {
+            if (linkKey) {
+                options += getDataListOption(linkKey);
+            }
+        }
+        getById('links-search-list').innerHTML = options;
+    }
+
+    function setListeners() {
+        const adSearchInput = getById('search-query');
+        adSearchInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                openAD();
+            }
+        });
+
+        document.querySelector('input[list="links-search-list"]').addEventListener('input', function(e) {
+            const input = e.target;
+            val = input.value;
+            if (val.length > 2) {
+                const linksMap = LINKS_SEARCH_MAP;
+                list = input.getAttribute('list');
+                options = document.getElementById(list).childNodes;
+                for(var option of options) {
+                    if(option.value === val) {
+                        openTab(linksMap.get(val))
+                        break;
+                    }
+                }
+            }
+        });
+    }
+</script>
+<script about="Collapsible functions">
+    function toggleCollapsible(elementId) {
+        const element = getById(elementId);
+        if (element.classList.contains('show')) {
+            element.classList.remove('show');
+        } else {
+            element.classList.add('show');
+        }
+    }
+</script>
+<script about="Toast functions">
+    function changeElementClasses(element, classesToAdd, classesToRemove) {
+        const addClasses = classesToAdd.split(' ');
+        const removeClasses = classesToRemove.split(' ');
+        for (let styleToAdd of addClasses) {
+            element.classList.add(styleToAdd);
+        }
+        for (let styleToRemove of removeClasses) {
+            element.classList.remove(styleToRemove);
+        }
+    }
+
+    function showToast(text) {
+        const toastBody = getById("toast-body");
+        toastBody.innerHTML = text;
+        $('.toast').toast('show');
+    }
+
+    function showSuccessToast(text) {
+        const toastBody = getById("toast-body");
+        changeElementClasses(toastBody, 'bg-success text-white', 'bg-warning text-black');
+        showToast(text);
+    }
+
+    function showWarningToast(text) {
+        const toastBody = getById("toast-body");
+        changeElementClasses(toastBody, 'bg-warning text-black', 'bg-success text-white');
+        showToast(text);
+    }
+</script>
+<script about="Copy parameters and open windows">
+    function copy(elementId) {
+        const element = getById(elementId);
+
+        if (!navigator.clipboard) {
+            element.select();
+            document.execCommand('copy');
+            showSuccessToast('Copied to clipboard');
+        } else {
+            navigator.clipboard.writeText(element.innerHTML)
+                .then(function() {
+                    showSuccessToast('Copied to clipboard');
+                })
+                .catch(function() {
+                    showWarningToast('Error accured while copying to clipboard');
+                });
+        }
+    }
+
+    function openProjectSwagger() {
+        if (!isEmpty(selectedProject)) {
+            let shouldHaveDocsInfixInUrl = PROJECTS.find(o => o.swaggerName === selectedProject).shouldHaveDocsInfixInUrl;
+            if (shouldHaveDocsInfixInUrl) {
+                const link = SWAGGER.replace('${ENV}', selectedEnvironment).replace('${PROJECT}', selectedProject);
+                openTab(link);
+            } else {
+                const link = SWAGGER.replace('${ENV}', selectedEnvironment).replace('${PROJECT}/docs', selectedProject);
+                openTab(link);
+            }
+
+        } else {
+            showWarningToast('Please select project and environment');
+        }
+    }
+
+    function openAD() {
+        const query = getValue('search-query');
+        if (query && query.length > 2) {
+            const link = AD.replace('${QUERY}', query);
+            openTab(link);
+        } else {
+            showWarningToast('Please enter more than 2 characters of person name or surname');
+        }
+    }
+</script>
+<script about="Project change">
+    function changeProject() {
+        selectedProject = getValue('project-list-select');
+    }
+
+    function changeEnvironment() {
+        selectedEnvironment = getValue('environment-list-select');
+        if (selectedEnvironment === 'test') {
+            selectedEnvironment = '';
+        }
+    }
+</script>
+<script about="Tab change">
+    function enableMain() {
+        setActive("nav-main");
+        show("image-links");
+        show("main-buttons");
+    }
+
+    function disableMain() {
+        setInactive("nav-main");
+        hide("image-links");
+        hide("main-buttons");
+    }
+
+    function enableDevLinksTab() {
+        setActive("nav-dev");
+        show("dev-tab");
+    }
+
+    function disableDevLinksTab() {
+        setInactive("nav-dev");
+        hide("dev-tab");
+    }
+
+    function enableManageTab() {
+        setActive("nav-manage");
+        show("manage-tab");
+    }
+
+    function disableManageTab() {
+        setInactive("nav-manage");
+        hide("manage-tab");
+    }
+
+    function enableNotesTab() {
+        setActive("nav-notes");
+        show("notes-tab");
+    }
+
+    function disableNotesTab() {
+        setInactive("nav-notes");
+        hide("notes-tab");
+    }
+
+    function showMain() {
+        enableMain();
+        disableNotesTab();
+        disableManageTab();
+        disableDevLinksTab();
+    }
+
+    function showManageLinks() {
+        enableManageTab();
+        disableMain();
+        disableNotesTab();
+        disableDevLinksTab();
+    }
+
+    function showDevLinks() {
+        enableDevLinksTab();
+        disableMain();
+        disableManageTab();
+        disableNotesTab();
+    }
+
+    function showNotesTab() {
+        enableNotesTab();
+        disableMain();
+        disableManageTab();
+        disableDevLinksTab();
+    }
+
+    function showContent() {
+        getById("main-content").classList.remove('d-none');
+        getById("main-content").classList.add('d-block');
+        showMain();
+    }
+
+    function showBrowserError() {
+        getById("error").classList.remove('d-none');
+        getById("error").classList.add('d-block');
+    }
+</script>
+<script>
+    function setup() {
+        setProjectSelections();
+        setEnvironmentSelections();
+        setLinksSearchList();
+        setListeners();
+    }
+</script>
+
+<body>
+
+    <div id="error" class="w-100 h-100 d-none" style="z-index: 999;">
+        <h2>This browser is not supported<h2>
+    </div>
+
+    <datalist id="links-search-list" style="overflow-y: auto !important; overflow-x: hidden;"></datalist>
+
+    <div id="main-content" class="d-none">
+    <nav class="navbar navbar-expand-lg navbar-dark nav-bar-bg">
+        <h3 class="navbar-brand my-auto" onclick="refresh()" style="cursor: pointer;">
+            <img class="ms-3" src="./assets/telia-logo-white.svg">
+        </h3>
+        <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
+            <form class="form-inline">
+                <button id="nav-main" class="btn nav-bar-btn" type="button"
+                    onclick="showMain()">Main</button>
+                <button id="nav-dev" class="btn nav-bar-btn" type="button"
+                    onclick="showDevLinks()">Develop</button>
+                <button id="nav-manage" class="btn nav-bar-btn" type="button"
+                    onclick="showManageLinks()">Manage</button>
+                <button id="nav-notes" class="btn nav-bar-btn" type="button"
+                    onclick="showNotesTab()">Notes</button>
+            </form>
+        </div>
+        <div class="me-2">
+            <div class="form-group">
+                <input type="search" class="form-control deafult-cursor" id="search-link-query" placeholder="Search link" list="links-search-list">
+            </div>
+        </div>
+        <div class="ad-search-box">
+            <div class="form-group">
+                <input type="search" class="form-control" id="search-query" placeholder="Search name, surname or TCAD">
+            </div>
+            <div class="d-flex align-items-end">
+                <button class="btn btn-icon btn-telia text-white mx-2"
+                    onclick="openAD()">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+        </div>
+        <span id="app-version" class="text-white my-auto me-3"></span>
+    </nav>
+
+
+    <div class="main">
+
+        <div id="notes-tab" class="mt-3">
+            <iframe src="src/tabs/note-tab.html" title="Notes tab"></iframe>
+        </div>
+
+        <div id="manage-tab" class="mt-3">
+            <iframe src="src/tabs/management-tab.html" title="Management tab"></iframe>
+        </div>
+
+        <div id="dev-tab">
+            <iframe src="src/tabs/develop-tab.html" title="Developers tab"></iframe>
+        </div>
+
+        <!-- HOME TAB -->
+        <div id="image-links" class="my-2 mt-3">
+            <div class="d-flex flex-row ms-3">
+                <div class="d-flex flex-column">
+                    <input type="image" id="jira-link"
+                    src="./assets/jira_logo.png"
+                    onclick="openTab(JIRA)"
+                    alt="Jira Image Link"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="Jira Board">
+                </div>
+                <div class="d-flex flex-column">
+                    <input type="image"
+                    src="./assets/confluence-logo.png"
+                    onclick="openTab(CONFLUENCE)"
+                    alt="Confluence Image Link"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="Confluence">
+                </div>
+                <div class="d-flex flex-column">
+                    <input type="image"
+                    src="./assets/bitbucket-logo.png"
+                    id="bitbucket-link"
+                    onclick="openTab(BITBUCKET_DASHBOARD)"
+                    alt="BitBucket"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="BitBucket">
+                </div>
+                <div class="d-flex flex-column">
+                    <input type="image"
+                    src="./assets/github-logo.png"
+                    onclick="openTab(GITHUB)"
+                    alt="GitHub"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="Telia GitHub">
+                </div>
+                <span class="modal-toggle-icon"
+                    data-bs-placement="bottom"
+                    data-bs-toggle="modal"
+                    title="Other GitHub links"
+                    data-bs-target="#githubLinksModal">
+                    <i class="fa-solid fa-arrow-up-right-from-square ms-2 mb-3 color-gray"></i>
+                </span>
+                <div class="d-flex flex-column">
+                    <input type="image"
+                    id="jenkins-link"
+                    src="./assets/jenkins-logo.png"
+                    onclick="openTab(JENKINS)"
+                    alt="Jenkins"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="Jenkins">
+                </div>
+                <div class="d-flex flex-column">
+                    <input type="image"
+                    id="grafana-link"
+                    src="./assets/grafana-logo.png"
+                    onclick="openTab(GRAFANA_PROD)"
+                    alt="Grafana"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="Grafana dashboard">
+                </div>
+                <div class="d-flex flex-column">
+                    <input type="image"
+                    id="workday-link"
+                    src="./assets/workday-logo.png"
+                    onclick="openTab(WORKDAY)"
+                    alt="Workday"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="Workday">
+                </div>
+
+                <div class="p-1" style="background-color: rgb(241, 241, 241)"></div>
+
+                <div class="d-flex flex-column">
+                    <input type="image"
+                    id="figma-link"
+                    src="./assets/figma-logo.svg"
+                    onclick="openTab(FIGMA)"
+                    alt="Figma"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="Figma">
+                </div>
+                <div class="d-flex flex-column">
+                    <input type="image"
+                           id="contentful-link"
+                           src="./assets/contentful-logo.png"
+                           onclick="openTab(CONTENTFUL)"
+                           alt="Contentful"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="bottom"
+                           title="Contentful">
+                </div>
+            </div>
+        </div>
+
+        <div id="main-buttons">
+            <!-- Main links -->
+            <div class="card mb-5">
+                <div class="card-header" id="headingOne" onclick="toggleCollapsible('collapseOne')">
+                    <a class="w-100 my-auto text-start unselectable" role="button">
+                        <h4>&equiv; &nbsp; Main</h4>
+                    </a>
+                </div>
+                <div id="collapseOne" class="collapse show multi-collapse" aria-labelledby="headingOne">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="mx-3">
+                                <div class="m-2">
+                                    <button class="btn btn-telia mb-1"
+                                            onclick="openTab(MAIN_APP)">
+                                        Main App
+                                    </button>
+                                </div>
+                                <div class="m-2">
+                                    <button class="btn btn-success mb-1"
+                                            onclick="openTab(DEPLOYMENT_TOOLS)">
+                                        <span>Deployment</span>
+                                    </button>
+                                </div>
+                                <div class="m-2">
+                                    <button class="btn btn-success mb-1 text-end" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" title="Incident tickets management tool"
+                                        onclick="openTab(INIT)">
+                                        <span>INIT</span>
+                                        <i class="fas fa-headset my-auto me-2" style="margin-left: 1.3rem; opacity: .5;"></i>
+                                    </button>
+                                </div>
+                                <div class="m-2">
+                                    <button class="btn btn-success mb-1 text-end" data-bs-toggle="tooltip"
+                                        data-bs-placement="right" title="System logs"
+                                        onclick="openTab(SPLUNK)">
+                                        <span>Splunk</span>
+                                        <i class="fas fa-chart-bar my-auto me-2" style="margin-left: .7rem; opacity: .5;"></i>
+                                    </button>
+                                    <span class="modal-toggle-icon" data-bs-toggle="modal" data-bs-target="#splunkTipsModal">
+                                        <i class="fa-solid fa-circle-info ms-2 my-auto color-gray"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="p-1" style="background-color: rgb(241, 241, 241)"></div>
+
+                            <div class="ms-3">
+                                <div class="my-2">
+                                    <div class="env-title">Test</div>
+                                </div>
+                                <div class="m-2">
+                                    <button class="btn btn-warning my-1"
+                                        onclick="openTab(LINK_1_TEST)">
+                                        Link 1
+                                    </button>
+                                </div>
+                                <div class="m-2">
+                                    <button class="btn btn-warning mb-1"
+                                        onclick="openTab(LINK_2_TEST)">
+                                        Link 2
+                                    </button>
+                                </div>
+                                <div class="m-2">
+                                    <button class="btn btn-warning mb-1"
+                                        onclick="openTab(LINK_3_TEST)">
+                                        Link 3
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="my-2">
+                                    <div class="env-title">Production</div>
+                                </div>
+                                <div class="m-2">
+                                    <button class="btn btn-danger my-1"
+                                        onclick="openTab(LINK_1_PROD)">
+                                        Link 1
+                                    </button>
+                                    <a href = "https://diva.teliacompany.net/confluence/"
+                                        target="_blank"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Link 1 guide">
+                                        <i class="fa-solid fa-circle-info ms-2 my-auto color-gray"></i>
+                                    </a>
+                                </div>
+                                <div class="m-2">
+                                    <button class="btn btn-danger mb-1"
+                                        onclick="openTab(LINK_2_PROD)">
+                                        Link 2
+                                    </button>
+                                </div>
+                                <div class="m-2">
+                                    <button class="btn btn-danger mb-1"
+                                        onclick="openTab(LINK_3_PROD)">
+                                        Link 3
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Environments -->
+                <div class="card">
+                    <div class="card-header" id="headingTwo" onclick="toggleCollapsible('collapseTwo')">
+                        <a class="w-100 my-auto text-start unselectable" role="button">
+                            <h4>&equiv; &nbsp; Environments</h4>
+                        </a>
+                    </div>
+                    <div id="collapseTwo" class="collapse multi-collapse" aria-labelledby="headingTwo">
+                        <div class="card-body">
+                            <div id="support-settings" class="d-block">
+
+                                <div class="row ms-2">
+                                    <h5>Test environment</h5>
+                                </div>
+                                <div class="row ms-3">
+                                    <div class="me-3">
+                                        <h6 class="mb-2">Project</h6>
+                                        <select class="form-select w-100 mb-2" id="project-list-select" onchange="changeProject()"></select>
+                                    </div>
+                                    <div class="me-3">
+                                        <h6 class="mb-2">Environment</h6>
+                                        <select class="form-select w-100 mb-2" id="environment-list-select" onchange="changeEnvironment()"></select>
+                                    </div>
+                                    <div class="d-flex align-items-stretch mb-2">
+                                        <div class="d-flex align-items-end">
+                                            <button class="btn btn-success"
+                                                    onclick="openProjectSwagger()">
+                                                    Swagger
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="line my-2"></div>
+
+                                <div class="row ms-2">
+                                    <h5>Local environment</h5>
+                                </div>
+                                <div class="row ms-2">
+                                    <div class="m-2">
+                                        <button class="btn btn-warning"
+                                                onclick="openTab(LOCAL_SWAGGER)">
+                                                Swagger
+                                        </button>
+                                    </div>
+                                    <div class="m-2">
+                                        <button class="btn btn-warning"
+                                                onclick="openTab(LOCAL_API_DOCS)">
+                                                API Docs
+                                        </button>
+                                    </div>
+                                    <div class="m-2">
+                                        <button class="btn btn-warning"
+                                                onclick="openTab(LOCAL_ACTUATOR)">
+                                                Actuator
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOME TAB -->
+
+        <div class="toast" data-bs-delay="2000">
+            <div id="toast-body" class="toast-body"></div>
+        </div>
+
+        <!-- Splunk Info Modal -->
+        <div class="modal fade" id="splunkTipsModal" tabindex="-1" aria-labelledby="splunkTipsModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header p-4" style="vertical-align: middle;">
+                        <h2 class="modal-title" id="splunkTipsModalLabel">Query examples</h2>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group">
+                            <li class="list-group-item"><code>environment="prod"</code></li>
+                            <li class="list-group-item"><code>source="/opt/apps/logs/kubernetes/tse/deployments/*"</code></li>
+                            <li class="list-group-item"><code>level="ERROR"</code></li>
+                            <li class="list-group-item"><code>message="*getBucketHistory*"</code></li>
+                            <li class="list-group-item"><code>environment="prod" AND source="/opt/apps/logs/kubernetes/tse/deployments/*" AND level="ERROR" AND message="*getBucketHistory*"</code></li>
+                            <li class="list-group-item">Some more examples: <a href="https://lzone.de/cheat-sheet/Splunk" target="_blank"><strong>Splunk cheat sheet</strong></a></li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="m-auto">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GitHub Modal -->
+        <div class="modal fade" id="githubLinksModal" tabindex="-1" aria-labelledby="githubLinksModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header p-4" style="vertical-align: middle;">
+                        <h2 class="modal-title" id="githubLinksModalLabel">Telia company GitHub links</h2>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group">
+                            <li class="list-group-item link" data-bs-toggle="tooltip" data-bs-placement="left" title="Your team">
+                                <div class="d-flex flex-line" onclick="openTab(GITHUB_TEAM)">
+                                    <span>Team</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square ms-2 mt-1 color-gray"></i>
+                                </div>
+                            </li>
+                            <li class="list-group-item link" data-bs-toggle="tooltip" data-bs-placement="left" title="GitHub public repositroies">
+                                <div class="d-flex flex-line" onclick="openTab(GITHUB_PUBLIC)">
+                                    <span>Public repositories</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square ms-2 mt-1 color-gray"></i>
+                                </div>
+                            </li>
+                            <li class="list-group-item link" data-bs-toggle="tooltip" data-bs-placement="left" title="GitHub enterprise repositories">
+                                <div class="d-flex flex-line" onclick="openTab(GITHUB)">
+                                    <span>Enterprise repositories</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square ms-2 mt-1 color-gray"></i>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="m-auto">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="footer text-end">
+        <div style="cursor: pointer;"><a href="https://github.com/telia-company/"><i class="far fa-question-circle"></i> Help & Feedback</a></div>
+        <div>&copy; Telia Company</div>
+    </div>
+</body>
+<script>
+    const fn = function () {
+        const ua = window.navigator.userAgent;
+        const msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+            showBrowserError()
+        } else {
+            document.getElementById('app-version').innerHTML = APP_VERSION;
+            showContent();
+            setup();
+        }
+    };
+
+    if (window.addEventListener)
+        window.addEventListener("load", fn, false);
+    else if (window.attachEvent)
+        window.attachEvent("onload", fn);
+    else
+        window.onload = fn;
+</script>
+
+</html>
