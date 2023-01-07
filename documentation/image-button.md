@@ -28,7 +28,7 @@ Some button styles is overwritten in [components.css](./../src/styles/components
 * **title** - tooltip content
 
 #### Result:
-<img src="./assets/image-button.PNG" alt="Jira image button">
+<img src="./assets/image-button.png" alt="Jira image button">
 
 ---
 
