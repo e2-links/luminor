@@ -1,14 +1,8 @@
 # Team Links POC
 
-<br>
-
-<b>[Demo page]()</b>
-
-<br>
+### <b>[Demo page](https://miniature-potato-a5e43507.pages.github.io/)</b>
 
 ---
-
-<br>
 
 ## Documentation
 
@@ -22,8 +16,6 @@
 
 ---
 
-<br>
-
 ## How to do changes?
 1. Git pull master
 2. Do the changes in code 
@@ -35,8 +27,6 @@
 <br>
 
 ---
-
-<br>
 
 ## Simple UI elements:
 <b>Button:</b>
@@ -73,19 +63,15 @@
 </div>
 ```
 
-
 <br>
 
 ---
-
-<br>
 
 ## Dependencies
 
 * [Bootstrap](https://getbootstrap.com/docs/5.2/components/) | styles
 * [JQuery](https://api.jquery.com/) | functions
 * [Font Awesome](https://fontawesome.com/v5/search) | icons
-
 
 <br>
 
