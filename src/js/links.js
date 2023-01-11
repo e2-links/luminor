@@ -14,12 +14,6 @@ const LINK_3_PROD = 'https://www.google.com/search?q=Link+3&hl=en';
 
 
 /** STATIC LINKS */
-const APIGEE_LOGIN = 'https://login.apigee.com/login';
-const API_GARDEN_PROD = 'https://developer.teliacompany.io';
-const API_GARDEN_TEST = 'https://stage.developer.teliacompany.io';
-const API_MARKET_PROD = 'https://apimarketps.telia.se:9443/store/';
-const API_MARKET_TEST = 'https://apimarketps-at.ddc.teliasonera.net:9443/store/';
-const API_SUPPORT = `https://diva.teliacompany.net/`;
 const APPLICATIONS = 'https://arscmdbprodweb.ddc.teliasonera.net/arsys/shared/redirect_h2_open.jsp';
 const ARTIFACTORY = 'https://artifactory.dc.teliacompany.net/ui/packages';
 const BENEFIT = 'https://teliacompanyspace.sharepoint.com/sites/PP/SitePages/Benefits(1).aspx';
@@ -43,7 +37,6 @@ const INTRANET_SE = 'https://teliacompanyspace.sharepoint.com/sites/TGSLhotspot'
 const JENKINS = 'https://jenkins.dc.teliacompany.net/';
 const JFROG = 'https://jfrog.teliacompany.io/ui/login/';
 const JIRA = 'https://diva.teliacompany.net/jira/';
-const KUBERNETES = 'http://k8slb03t.ddc.teliasonera.net/dashboard/#/workloads?namespace=_all';
 const LEARNING_PLURALSIGHT = 'https://app.pluralsight.com/library/';
 const LOCAL_ACTUATOR = 'http://localhost:9000/actuator/health';
 const LOCAL_API_DOCS = 'http://localhost:8080/v3/api-docs';
@@ -52,11 +45,8 @@ const MOBILE = 'http://ws000webdev1.tcad.telia.se/TGSLMobileDev/Order';
 const MS_OFFICE = 'https://www.office.com/?auth=2&home=1';
 const NEWCOMER = 'https://diva.teliacompany.net/confluence/';
 const OFFICE_VIBE = 'https://app.officevibe.com/portal/my/home';
-const ORDER_PROCESSOR_TOOL_AT = 'https://opt-at.ddc.teliasonera.net:5570/app/orders';
-const ORDER_PROCESSOR_TOOL_PROD = 'https://opt.ddc.teliasonera.net/app/orders';
 const PACKAGES = 'https://artifactory.dc.teliacompany.net/artifactory/telia-releases/';
 const PARKING_REGISTRATION = 'https://tgsl-parking.telia.io/';
-const PROMETHEUS = 'https://k8slb01p.ddc.teliasonera.net/internal/prometheus/graph'
 const SANDBOX_JAVA = 'https://www.sololearn.com/compiler-playground/java';
 const SANDBOX_JAVASCRIPT = 'https://jsfiddle.net/cq01ruvp/1/';
 const SANDBOX_KOTLIN = 'https://www.sololearn.com/compiler-playground/kotlin';
@@ -70,12 +60,6 @@ const VULNERABILITIES_REPORT = 'https://engagement-stats.dc.teliacompany.net/spr
 const WORKDAY = 'https://wd3.myworkday.com/teliacompany/';
 
 const LINKS_SEARCH_MAP = new Map([
-    ["API Market Test", API_MARKET_TEST],
-    ["API Market Prod", API_MARKET_PROD],
-    ["API Garden Test", API_GARDEN_TEST],
-    ["API Garden Prod", API_GARDEN_PROD],
-    ["APIGee Login", APIGEE_LOGIN],
-    ["Applications(H2)", APPLICATIONS],
     ["Book Store", BOOK_STORE],
     ["HRB", HRB],
     ["TIGA", TIGA],
@@ -94,11 +78,8 @@ const LINKS_SEARCH_MAP = new Map([
     ["INIT System", INIT],
     ["Splunk Logs", SPLUNK],
     ["Grafana Prod", GRAFANA_PROD],
-    ["Kubernetes", KUBERNETES],
-    ["Prometheus", PROMETHEUS],
     ["Artifactory (old)", ARTIFACTORY],
     ["Artifactory (JFrog)", JFROG],
-    ["API Support", API_SUPPORT],
     ["Jira", JIRA],
     ["Confluence", CONFLUENCE],
     ["BitBucket Dashboard", BITBUCKET_DASHBOARD],
@@ -109,8 +90,6 @@ const LINKS_SEARCH_MAP = new Map([
     ["Diva", DIVA],
     ["Pluralsight", LEARNING_PLURALSIGHT],
     ["Office Vibe", OFFICE_VIBE],
-    ["Order Processor Test", ORDER_PROCESSOR_TOOL_AT],
-    ["Order Processor Prod", ORDER_PROCESSOR_TOOL_PROD],
     ["Password Change", TELIA_PASSWORD_CHANGE],
     ["Artifactory Packages", PACKAGES],
     ["Localhost (Swagger)", LOCAL_SWAGGER],
@@ -124,11 +103,3 @@ const LINKS_SEARCH_MAP = new Map([
     ["Sass Scss Sandbox", SANDBOX_SASS],
     ["Contentful", CONTENTFUL]
 ].sort());
-
-const SANDBOXES = [
-    { name: "Java Sandbox", link: SANDBOX_JAVA },
-    { name: "Kotlin Sandbox", link: SANDBOX_KOTLIN },
-    { name: "JavaScript Sandbox", link: SANDBOX_JAVASCRIPT },
-    { name: "TypeScript Sandbox", link: SANDBOX_TYPESCRIPT },
-    { name: "Sass Scss Sandbox", link: SANDBOX_SASS }
-];

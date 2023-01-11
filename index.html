@@ -249,16 +249,6 @@
         hide("main-buttons");
     }
 
-    function enableDevLinksTab() {
-        setActive("nav-dev");
-        show("dev-tab");
-    }
-
-    function disableDevLinksTab() {
-        setInactive("nav-dev");
-        hide("dev-tab");
-    }
-
     function enableManageTab() {
         setActive("nav-manage");
         show("manage-tab");
@@ -283,20 +273,11 @@
         enableMain();
         disableNotesTab();
         disableManageTab();
-        disableDevLinksTab();
     }
 
     function showManageLinks() {
         enableManageTab();
         disableMain();
-        disableNotesTab();
-        disableDevLinksTab();
-    }
-
-    function showDevLinks() {
-        enableDevLinksTab();
-        disableMain();
-        disableManageTab();
         disableNotesTab();
     }
 
@@ -304,7 +285,6 @@
         enableNotesTab();
         disableMain();
         disableManageTab();
-        disableDevLinksTab();
     }
 
     function showContent() {
@@ -344,8 +324,6 @@
             <form class="form-inline">
                 <button id="nav-main" class="btn nav-bar-btn" type="button"
                     onclick="showMain()">Main</button>
-                <button id="nav-dev" class="btn nav-bar-btn" type="button"
-                    onclick="showDevLinks()">Develop</button>
                 <button id="nav-manage" class="btn nav-bar-btn" type="button"
                     onclick="showManageLinks()">Manage</button>
                 <button id="nav-notes" class="btn nav-bar-btn" type="button"
@@ -380,10 +358,6 @@
 
         <div id="manage-tab" class="mt-3">
             <iframe src="src/tabs/management-tab.html" title="Management tab"></iframe>
-        </div>
-
-        <div id="dev-tab">
-            <iframe src="src/tabs/develop-tab.html" title="Developers tab"></iframe>
         </div>
 
         <!-- HOME TAB -->
