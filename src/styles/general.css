@@ -7,13 +7,9 @@ body {
     font-family: 'TeliaSans', Helvetica, Arial, 'Lucida Grande', sans-serif;
 }
 
+#manage-tab,
 #notes-tab {
     height: 85vh;
-}
-
-#dev-tab,
-#manage-tab {
-    height: 93.27vh;
 }
 
 #notes-tab>iframe,
