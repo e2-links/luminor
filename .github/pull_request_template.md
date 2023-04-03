@@ -1,8 +1,8 @@
-<small><b>Version:</b> v0.0.0</small>
-## What's new:
+# What's new
+
 * Add something
 * Add something else
 
 ---
 
-&copy; 2023 Nebula Team, [Telia Company](https://telia.se)
+&copy; 2023 [Telia Company](https://telia.se)
