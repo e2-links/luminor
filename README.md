@@ -1,3 +1,4 @@
+[![Lint](https://github.com/telia-company/team-links-poc/actions/workflows/lint.yaml/badge.svg)](https://github.com/telia-company/team-links-poc/actions/workflows/lint.yaml)
 # Team Links POC
 
 ### <b>[Demo page](https://miniature-potato-a5e43507.pages.github.io/)</b>
