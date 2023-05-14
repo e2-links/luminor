@@ -1,7 +1,7 @@
 [![Lint](https://github.com/e2-links/luminor/actions/workflows/lint.yaml/badge.svg)](https://github.com/e2-links/luminor/actions/workflows/lint.yaml)
 # Team Links
 
-### <b>[Demo page](https://miniature-potato-a5e43507.pages.github.io/)</b>
+### <b>[Online page](https://e2-links.github.io/luminor/)</b>
 
 ---
 
