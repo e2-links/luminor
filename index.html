@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Telia Links</title>
-    <link rel="icon" type="image/x-icon" href="./assets/http.ico">
+    <title>Luminor Tools</title>
+    <link rel="icon" type="image/x-icon" href="./assets/luminor-stone.ico">
 
     <!-- Bootstrap 5.3.0-alpha2 styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="./src/styles/ad-search-box.css">
     <link rel="stylesheet" href="./src/styles/links-search-box.css">
     <link rel="stylesheet" href="./src/styles/general.css">
+    <link rel="stylesheet" href="./src/styles/clock.css">
 
 </head>
 
@@ -42,16 +43,16 @@
 <script src="https://kit.fontawesome.com/370349eb06.js" crossorigin="anonymous"></script>
 
 <!-- Internal -->
+<script about="Main" type="text/javascript" src="./src/js/main.js"></script>
 <script about="Constants" type="text/javascript" src="./src/js/constants.js"></script>
 <script about="DOM elements util" type="text/javascript" src="./src/js/utils.js"></script>
 <script about="Links" type="text/javascript" src="./src/js/links.js"></script>
 <script about="Parameters">
 
     /* app version */
-    const APP_VERSION = 'v0.0.3';
+    const APP_VERSION = 'v1.0.0';
     /* variables */
-    let selectedProject = '';
-    let selectedEnvironment = '';
+    let percentage = '0.15';
 
     function refresh() {
         location.reload();
@@ -87,24 +88,6 @@
 
 </script>
 <script about="Setup">
-    function setProjectSelections() {
-        let options = '<option value="-" disabled selected>Select...</option>';
-        const projects = PROJECTS;
-        for (let project of projects) {
-                options += getOptionHtmlTag(project.swaggerName, project.swaggerName);
-        }
-        getById('project-list-select').innerHTML = options;
-    }
-
-    function setEnvironmentSelections() {
-        let options;
-        const environments = ENVIRONMENTS;
-        for (let environment of environments) {
-            options += getOptionHtmlTag(environment, environment);
-        }
-        getById('environment-list-select').innerHTML = options;
-    }
-
     function setLinksSearchList() {
         let options;
         const linksMap = LINKS_SEARCH_MAP;
@@ -114,32 +97,6 @@
             }
         }
         getById('links-search-list').innerHTML = options;
-    }
-
-    function setListeners() {
-        const adSearchInput = getById('search-query');
-        adSearchInput.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                openAD();
-            }
-        });
-
-        document.querySelector('input[list="links-search-list"]').addEventListener('input', function(e) {
-            const input = e.target;
-            val = input.value;
-            if (val.length > 2) {
-                const linksMap = LINKS_SEARCH_MAP;
-                list = input.getAttribute('list');
-                options = document.getElementById(list).childNodes;
-                for(var option of options) {
-                    if(option.value === val) {
-                        openTab(linksMap.get(val))
-                        break;
-                    }
-                }
-            }
-        });
     }
 </script>
 <script about="Collapsible functions">
@@ -201,42 +158,12 @@
         }
     }
 
-    function openProjectSwagger() {
-        if (!isEmpty(selectedProject)) {
-            let shouldHaveDocsInfixInUrl = PROJECTS.find(o => o.swaggerName === selectedProject).shouldHaveDocsInfixInUrl;
-            if (shouldHaveDocsInfixInUrl) {
-                const link = SWAGGER.replace('${ENV}', selectedEnvironment).replace('${PROJECT}', selectedProject);
-                openTab(link);
-            } else {
-                const link = SWAGGER.replace('${ENV}', selectedEnvironment).replace('${PROJECT}/docs', selectedProject);
-                openTab(link);
-            }
-
-        } else {
-            showWarningToast('Please select project and environment');
-        }
-    }
-
-    function openAD() {
-        const query = getValue('search-query');
-        if (query && query.length > 2) {
-            const link = AD.replace('${QUERY}', query);
-            openTab(link);
-        } else {
-            showWarningToast('Please enter more than 2 characters of person name or surname');
-        }
-    }
-</script>
-<script about="Project change">
-    function changeProject() {
-        selectedProject = getValue('project-list-select');
-    }
-
-    function changeEnvironment() {
-        selectedEnvironment = getValue('environment-list-select');
-        if (selectedEnvironment === 'test') {
-            selectedEnvironment = '';
-        }
+    function copyInput(elementId) {
+        const element = getById(elementId);
+        element.select();
+        element.setSelectionRange(0, 99999); // For mobile devices
+        navigator.clipboard.writeText(element.value);
+        showSuccessToast('Copied to clipboard');
     }
 </script>
 <script about="Tab change">
@@ -252,16 +179,6 @@
         hide("main-buttons");
     }
 
-    function enableManageTab() {
-        setActive("nav-manage");
-        show("manage-tab");
-    }
-
-    function disableManageTab() {
-        setInactive("nav-manage");
-        hide("manage-tab");
-    }
-
     function enableNotesTab() {
         setActive("nav-notes");
         show("notes-tab");
@@ -275,19 +192,11 @@
     function showMain() {
         enableMain();
         disableNotesTab();
-        disableManageTab();
-    }
-
-    function showManageLinks() {
-        enableManageTab();
-        disableMain();
-        disableNotesTab();
     }
 
     function showNotesTab() {
         enableNotesTab();
         disableMain();
-        disableManageTab();
     }
 
     function showContent() {
@@ -303,10 +212,10 @@
 </script>
 <script>
     function setup() {
-        setProjectSelections();
-        setEnvironmentSelections();
+        getById("calculator-percentage").value = percentage;
         setLinksSearchList();
-        setListeners();
+        setupClock();
+        setupDate();
     }
 </script>
 
@@ -321,35 +230,20 @@
     <div id="main-content" class="d-none">
     <nav class="navbar navbar-expand-lg navbar-dark nav-bar-bg">
         <h3 class="navbar-brand my-auto" onclick="refresh()" style="cursor: pointer;">
-            <img class="ms-3" src="./assets/telia-logo-white.svg">
+            <img class="mx-3" src="./assets/luminor-wordmark-stone.png" height="40rem">
         </h3>
         <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
             <form class="form-inline">
                 <button id="nav-main" class="btn nav-bar-btn" type="button"
                     onclick="showMain()">Main</button>
-                <button id="nav-manage" class="btn nav-bar-btn" type="button"
-                    onclick="showManageLinks()">Manage</button>
                 <button id="nav-notes" class="btn nav-bar-btn" type="button"
                     onclick="showNotesTab()">Notes</button>
             </form>
         </div>
-        <div class="me-2">
-            <div class="form-group">
-                <input type="search" class="form-control deafult-cursor" id="search-link-query" placeholder="Search link" list="links-search-list">
-            </div>
+        <div class="clock">
+            <div id="date" class="date"></div>
+            <div id="time" class="time"></div>
         </div>
-        <div class="ad-search-box">
-            <div class="form-group">
-                <input type="search" class="form-control" id="search-query" placeholder="Search name, surname or TCAD">
-            </div>
-            <div class="d-flex align-items-end">
-                <button class="btn btn-icon btn-telia text-white mx-2"
-                    onclick="openAD()">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </div>
-        </div>
-        <span id="app-version" class="text-white my-auto me-3"></span>
     </nav>
 
 
@@ -359,13 +253,9 @@
             <iframe src="src/tabs/note-tab.html" title="Notes tab"></iframe>
         </div>
 
-        <div id="manage-tab" class="mt-3">
-            <iframe src="src/tabs/management-tab.html" title="Management tab"></iframe>
-        </div>
-
         <!-- HOME TAB -->
         <div id="image-links" class="my-2 mt-3">
-            <div class="d-flex flex-row ms-3">
+            <!-- <div class="d-flex flex-row ms-3">
                 <div class="d-flex flex-column">
                     <input type="image" id="jira-link"
                     src="./assets/jira_logo.png"
@@ -375,95 +265,7 @@
                     data-bs-placement="bottom"
                     title="Jira Board">
                 </div>
-                <div class="d-flex flex-column">
-                    <input type="image"
-                    src="./assets/confluence-logo.png"
-                    onclick="openTab(CONFLUENCE)"
-                    alt="Confluence Image Link"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    title="Confluence">
-                </div>
-                <div class="d-flex flex-column">
-                    <input type="image"
-                    src="./assets/bitbucket-logo.png"
-                    id="bitbucket-link"
-                    onclick="openTab(BITBUCKET_DASHBOARD)"
-                    alt="BitBucket"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    title="BitBucket">
-                </div>
-                <div class="d-flex flex-column">
-                    <input type="image"
-                    src="./assets/github-logo.png"
-                    onclick="openTab(GITHUB)"
-                    alt="GitHub"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    title="Telia GitHub">
-                </div>
-                <span class="modal-toggle-icon"
-                    data-bs-placement="bottom"
-                    data-bs-toggle="modal"
-                    title="Other GitHub links"
-                    data-bs-target="#githubLinksModal">
-                    <i class="fa-solid fa-arrow-up-right-from-square ms-2 mb-3 color-gray"></i>
-                </span>
-                <div class="d-flex flex-column">
-                    <input type="image"
-                    id="jenkins-link"
-                    src="./assets/jenkins-logo.png"
-                    onclick="openTab(JENKINS)"
-                    alt="Jenkins"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    title="Jenkins">
-                </div>
-                <div class="d-flex flex-column">
-                    <input type="image"
-                    id="grafana-link"
-                    src="./assets/grafana-logo.png"
-                    onclick="openTab(GRAFANA_PROD)"
-                    alt="Grafana"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    title="Grafana dashboard">
-                </div>
-                <div class="d-flex flex-column">
-                    <input type="image"
-                    id="workday-link"
-                    src="./assets/workday-logo.png"
-                    onclick="openTab(WORKDAY)"
-                    alt="Workday"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    title="Workday">
-                </div>
-
-                <div class="p-1" style="background-color: rgb(241, 241, 241)"></div>
-
-                <div class="d-flex flex-column">
-                    <input type="image"
-                    id="figma-link"
-                    src="./assets/figma-logo.svg"
-                    onclick="openTab(FIGMA)"
-                    alt="Figma"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    title="Figma">
-                </div>
-                <div class="d-flex flex-column">
-                    <input type="image"
-                           id="contentful-link"
-                           src="./assets/contentful-logo.png"
-                           onclick="openTab(CONTENTFUL)"
-                           alt="Contentful"
-                           data-bs-toggle="tooltip"
-                           data-bs-placement="bottom"
-                           title="Contentful">
-                </div>
-            </div>
+            </div> -->
         </div>
 
         <div id="main-buttons">
@@ -471,110 +273,114 @@
             <div class="card mb-5">
                 <div class="card-header" id="headingOne" onclick="toggleCollapsible('collapseOne')">
                     <a class="w-100 my-auto text-start unselectable" role="button">
-                        <h4>&equiv; &nbsp; Main</h4>
+                        <h4>&equiv; &nbsp; Calculator</h4>
                     </a>
                 </div>
                 <div id="collapseOne" class="collapse show multi-collapse" aria-labelledby="headingOne">
                     <div class="card-body">
 
                         <div class="row">
-                            <div class="mx-3">
-                                <div class="m-2">
-                                    <button class="btn btn-telia mb-1"
-                                            onclick="openTab(MAIN_APP)">
-                                        Main App
-                                    </button>
+                            <div>
+                                <div class="row m-2">
+                                    <h4>Amount</h4>
                                 </div>
-                                <div class="m-2">
-                                    <button class="btn btn-success mb-1"
-                                            onclick="openTab(DEPLOYMENT_TOOLS)">
-                                        <span>Deployment</span>
-                                    </button>
+                                <div class="row m-2">
+                                    <div class="input-group flex-nowrap">
+                                        <input type="number" class="form-control" id="calculator-amount" placeholder="Amount">
+                                        <span class="input-group-text" id="amount-icon"><i class="fa-solid fa-coins"></i></span>
+                                    </div>
                                 </div>
-                                <div class="m-2">
-                                    <button class="btn btn-success mb-1 text-end" data-bs-toggle="tooltip"
-                                        data-bs-placement="top" title="Incident tickets management tool"
-                                        onclick="openTab(INIT)">
-                                        <span>INIT</span>
-                                        <i class="fas fa-headset my-auto me-2" style="margin-left: 1.3rem; opacity: .5;"></i>
-                                    </button>
+                                <div class="row m-2">
+                                    <div class="input-group flex-nowrap">
+                                        <input type="number" class="form-control" id="calculator-percentage" placeholder="Percentage">
+                                        <span class="input-group-text" id="percentage-icon">&nbsp;<i class="fa-solid fa-percent"></i></span>
+                                    </div>
                                 </div>
-                                <div class="m-2">
-                                    <button class="btn btn-success mb-1 text-end" data-bs-toggle="tooltip"
-                                        data-bs-placement="right" title="System logs"
-                                        onclick="openTab(SPLUNK)">
-                                        <span>Splunk</span>
-                                        <i class="fas fa-chart-bar my-auto me-2" style="margin-left: .7rem; opacity: .5;"></i>
-                                    </button>
-                                    <span class="modal-toggle-icon" data-bs-toggle="modal" data-bs-target="#splunkTipsModal">
-                                        <i class="fa-solid fa-circle-info ms-2 my-auto color-gray"></i>
-                                    </span>
+                                <div class="row m-2">
+                                    <div class="input-group flex-nowrap">
+                                        <input type="number" class="form-control" id="calculator-rate" placeholder="Rate">
+                                        <span class="input-group-text" id="rate-icon">
+                                            <a href = "https://www.lb.lt/"
+                                                target="_blank"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="right"
+                                                title="Bank rates">
+                                                <i class="fa-solid fa-chart-line"></i>
+                                            </a>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="p-1" style="background-color: rgb(241, 241, 241)"></div>
-
-                            <div class="ms-3">
-                                <div class="my-2">
-                                    <div class="env-title">Test</div>
+                                <div class="row m-2">
+                                    <div class="input-group flex-nowrap">
+                                        <input type="text" id="calculator-total" readonly alt="">
+                                    </div>
                                 </div>
-                                <div class="m-2">
-                                    <button class="btn btn-warning my-1"
-                                        onclick="openTab(LINK_1_TEST)">
-                                        Link 1
-                                    </button>
-                                </div>
-                                <div class="m-2">
-                                    <button class="btn btn-warning mb-1"
-                                        onclick="openTab(LINK_2_TEST)">
-                                        Link 2
-                                    </button>
-                                </div>
-                                <div class="m-2">
-                                    <button class="btn btn-warning mb-1"
-                                        onclick="openTab(LINK_3_TEST)">
-                                        Link 3
+                                <div class="line my-2"></div>
+                                <div class="row m-2">
+                                    <div class="me-4">
+                                        <button class="btn btn-luminor mb-1"
+                                                onclick="count()">
+                                            <span>Count</span>
+                                        </button>
+                                    </div>
+                                    <button class="btn btn-secondary mb-1"
+                                            onclick="copyInput('calculator-total')">
+                                        <span>Copy</span>
                                     </button>
                                 </div>
                             </div>
+
+                            <div class="p-1 mx-2" style="background-color: rgb(241, 241, 241)"></div>
 
                             <div>
-                                <div class="my-2">
-                                    <div class="env-title">Production</div>
+                                <div class="row m-2">
+                                    <h4>Date</h4>
                                 </div>
-                                <div class="m-2">
-                                    <button class="btn btn-danger my-1"
-                                        onclick="openTab(LINK_1_PROD)">
-                                        Link 1
-                                    </button>
-                                    <a href = "https://diva.teliacompany.net/confluence/"
-                                        target="_blank"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Link 1 guide">
-                                        <i class="fa-solid fa-circle-info ms-2 my-auto color-gray"></i>
-                                    </a>
+                                <div class="row m-2">
+                                    <div class="input-group flex-nowrap">
+                                        <input class="form-control" id="calc-date-start" placeholder="yyyy-mm-dd">
+                                        <span class="input-group-text" id="percentage-icon"><i class="fa-solid fa-calendar-days"></i></span>
+                                    </div>
                                 </div>
-                                <div class="m-2">
-                                    <button class="btn btn-danger mb-1"
-                                        onclick="openTab(LINK_2_PROD)">
-                                        Link 2
-                                    </button>
+                                <div class="row m-2">
+                                    <div class="input-group">
+                                        <input style="width: 15rem;" type="number" class="form-control" id="calc-date-days" placeholder="Days">
+                                    </div>
                                 </div>
-                                <div class="m-2">
-                                    <button class="btn btn-danger mb-1"
-                                        onclick="openTab(LINK_3_PROD)">
-                                        Link 3
+                                <div class="row m-2">
+                                    <div class="input-group flex-nowrap">
+                                        <input type="text" style="margin-top: 0.25rem;" id="calc-date-partial" readonly alt="">
+                                    </div>
+                                </div>
+                                <div class="row m-2">
+                                    <div class="input-group flex-nowrap">
+                                        <input type="text" style="margin-top: 0.3rem;" id="calc-date-total" readonly alt="">
+                                    </div>
+                                </div>
+                                <div class="line my-2"></div>
+                                <div class="row m-2">
+                                    <div class="me-4">
+                                        <button class="btn btn-luminor mb-1"
+                                                onclick="countDate()">
+                                            <span>Count</span>
+                                        </button>
+                                    </div>
+                                    <button class="btn btn-secondary mb-1"
+                                            onclick="copyInput('calc-date-total')">
+                                        <span>Copy</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
 
+                        
+
+
                     </div>
                 </div>
 
                 <!-- Environments -->
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header" id="headingTwo" onclick="toggleCollapsible('collapseTwo')">
                         <a class="w-100 my-auto text-start unselectable" role="button">
                             <h4>&equiv; &nbsp; Environments</h4>
@@ -634,7 +440,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -713,6 +519,7 @@
 
 
     <div class="footer text-end">
+        <span id="app-version"></span>
         <div style="cursor: pointer;"><a href="https://github.com/telia-company/team-links-poc/issues"><i class="far fa-question-circle"></i> Help & Feedback</a></div>
         <div>&copy; Telia Company</div>
     </div>

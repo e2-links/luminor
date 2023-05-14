@@ -1,12 +1,12 @@
-@import url(./telia-colors.css);
+@import url(./luminor-colors.css);
 
 .nav-bar-bg {
-    background-color: var(--tc-purple-500) !important;
+    background-color: var(--lc-burgundy-dark) !important;
 }
 
 .nav-bar-btn {
     width: 7rem;
-    background-color: var(--tc-purple-500);
+    background-color: var(--lc-burgundy-dark);
     color: white;
     border: none;
 }
@@ -20,7 +20,7 @@
 .nav-bar-btn:active,
 .nav-bar-btn.active {
     color: white;
-    background-color: var(--tc-purple-600);
+    background-color: var(--lc-burgundy-dark-80);
     border: none;
 }
 
@@ -102,15 +102,15 @@ table .btn {
     margin-top: .5rem;
 }
 
-.btn-telia,
-.btn-telia:active,
-.btn-telia:focus {
-    background-color: var(--tc-purple-500);
+.btn-luminor,
+.btn-luminor:active,
+.btn-luminor:focus {
+    background-color: var(--lc-burgundy-dark);
     color: white;
 }
 
-.btn-telia:hover {
-    background-color: var(--tc-purple-600);
+.btn-luminor:hover {
+    background-color: var(--lc-burgundy-dark-80);
     color: white;
 }
 
@@ -123,6 +123,12 @@ table .btn {
 .btn:hover:disabled {
     width: 150px;
     font-weight: bold;
+}
+
+.input-empty {
+    content: "";
+    height: 2.375rem;
+    width: 9.35rem;
 }
 
 .btn-auto {
