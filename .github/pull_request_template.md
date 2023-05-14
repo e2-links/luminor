@@ -5,4 +5,4 @@
 
 ---
 
-&copy; 2023 [Telia Company](https://telia.se)
+&copy; 2023

@@ -1,19 +1,7 @@
-[![Lint](https://github.com/telia-company/team-links-poc/actions/workflows/lint.yaml/badge.svg)](https://github.com/telia-company/team-links-poc/actions/workflows/lint.yaml)
-# Team Links POC
+[![Lint](https://github.com/e2-links/luminor/actions/workflows/lint.yaml/badge.svg)](https://github.com/e2-links/luminor/actions/workflows/lint.yaml)
+# Team Links
 
 ### <b>[Demo page](https://miniature-potato-a5e43507.pages.github.io/)</b>
-
----
-
-## Documentation
-
-* [Button](/documentation/button.md)
-* [Dropdown](/documentation/dropdown.md)
-* [Icon](/documentation/icon.md)
-* [Image button](/documentation/image-button.md)
-* [Modal](/documentation/modal.md)
-
-<br>
 
 ---
 
@@ -26,47 +14,6 @@
 6. Delete your feature branch
 
 <br>
-
----
-
-## Simple UI elements:
-<b>Button:</b>
-``` html
-<button class="btn btn-info"
-        data-bs-toggle="tooltip"
-        data-bs-placement="top"
-        title="GitHub enterprise"
-        onclick="openTab(GITHUB)">
-    Private
-</button>
-```
-
----
-
-<b>Line Separator:</b>
-``` html
-<div class="line my-3"></div>
-```
-
----
-
-<b>Image Button:</b>
-``` html
-<div class="d-flex flex-column">
-    <input type="image"
-        id="figma-link"
-        src="./assets/figma-logo.svg"
-        onclick="openTab(FIGMA)"
-        alt="Figma"
-        data-bs-toggle="tooltip"
-        data-bs-placement="bottom"
-        title="Figma">
-</div>
-```
-
-<br>
-
----
 
 ## Dependencies
 
@@ -81,4 +28,4 @@
 <br>
 
 <small>[About Dum6o](https://github.com/Dum6o)</small>  
-&copy; [Telia Company](https://telia.se)
+&copy; [Luminor Bank](www.luminor.lt)
